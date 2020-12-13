@@ -2,7 +2,10 @@ import * as React from "react";
 import { Formik } from "formik";
 
 import Title from "./../components/Title";
+import Button from "./../components/Button";
 import { FormObj, InputFieldObj } from "./../types";
+
+import "./../style/create-board.page.scss";
 
 const CreateBoardPage = (props) => {
   const _form: FormObj = {
@@ -29,7 +32,7 @@ const CreateBoardPage = (props) => {
           "Share this code with your friends, they need this to give their feedback.",
       },
       {
-        label: "unlockKey",
+        label: "unlock key",
         placeholder: "",
         description:
           "Works like a password. you need this to see other’s feedback to you. Don’t share with anyone.",
@@ -44,17 +47,25 @@ const CreateBoardPage = (props) => {
 
   const generateInputField = (fieldObj: InputFieldObj): any => {
     return (
-      <div>
-        <label htmlFor={fieldObj.label}>{fieldObj.label}</label>
-        <input id={fieldObj.label} placeholder={fieldObj.placeholder} />
-        {fieldObj.description ? <p>{fieldObj.description}</p> : ""}
+      <div className="input-field">
+        <label className="input-field--label" htmlFor={fieldObj.label}>
+          {fieldObj.label}
+        </label>
+        <input
+          className="input-field--input"
+          id={fieldObj.label}
+          placeholder={fieldObj.placeholder}
+        />
+        {fieldObj.description ? (
+          <p className="input-field--description">{fieldObj.description}</p>
+        ) : null}
       </div>
     );
   };
 
   return (
     <div>
-      <div>
+      <div className="header">
         <Title>Create Board</Title>
         <p>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio,
@@ -69,6 +80,8 @@ const CreateBoardPage = (props) => {
         {({ values, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             {_form.inputFields.map(generateInputField)}
+
+            <Button>Create Board</Button>
           </form>
         )}
       </Formik>
