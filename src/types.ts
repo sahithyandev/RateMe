@@ -9,10 +9,17 @@ export interface FormHandlersObj {
   [key: string]: any;
 }
 
+export interface InputFieldObj {
+  label: string;
+  description?: string;
+  placeholder?: string;
+}
+
 /**
  * A wrapper for Formik's values
  */
 export interface FormObj {
   initialValues: object;
   handlers: FormHandlersObj;
+  inputFields: InputFieldObj[];
 }
