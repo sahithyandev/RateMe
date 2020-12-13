@@ -1,0 +1,29 @@
+.input-field {
+  display: inline-flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+
+  .input-field--label {
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 3px;
+
+    font-family: "Roboto Mono";
+    font-size: 0.9em;
+  }
+  .input-field--input {
+    width: 100%;
+    font-size: 1.2em;
+    padding: 4px 8px;
+
+    border: 1.2px solid #4b4b4b;
+    border-radius: 3px;
+  }
+  .input-field--description {
+    margin: 8px 0 0 0;
+    font-size: 0.95em;
+    width: 90%;
+    font-weight: 300;
+  }
+}

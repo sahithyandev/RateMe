@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Formik } from "formik";
 
-import Title from "./../components/Title";
-import Button from "./../components/Button";
-import { FormObj, InputFieldObj } from "./../types";
+import { Button } from "./../components/Button";
+import { FormObj } from "./../types";
 
 import "./../style/create-board.page.scss";
+import { ContentHeader } from "./../components/ContentHeader";
+import { InputField } from "./../components/InputField";
 
-const CreateBoardPage = (props) => {
+export const CreateBoardPage = (props) => {
   const _form: FormObj = {
     initialValues: {
       name: "",
@@ -45,48 +46,34 @@ const CreateBoardPage = (props) => {
     ],
   };
 
-  const generateInputField = (fieldObj: InputFieldObj): any => {
-    return (
-      <div className="input-field">
-        <label className="input-field--label" htmlFor={fieldObj.label}>
-          {fieldObj.label}
-        </label>
-        <input
-          className="input-field--input"
-          id={fieldObj.label}
-          placeholder={fieldObj.placeholder}
-        />
-        {fieldObj.description ? (
-          <p className="input-field--description">{fieldObj.description}</p>
-        ) : null}
-      </div>
-    );
-  };
-
   return (
-    <div>
-      <div className="header">
-        <Title>Create Board</Title>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio,
-          consectetur.
-        </p>
-      </div>
+    <div className="page">
+      <ContentHeader
+        title="Create Board"
+        content="Urna ut volutpat egestas amet posuere pellentesque molestie sagittis nisi"
+      />
 
       <Formik
         initialValues={_form.initialValues}
         onSubmit={_form.handlers.onSumbit}
       >
-        {({ values, handleSubmit }) => (
+        {({ values, handleSubmit, handleChange }) => (
           <form onSubmit={handleSubmit}>
-            {_form.inputFields.map(generateInputField)}
+            {_form.inputFields.map((fieldObj) => {
+              return (
+                <InputField
+                  key={fieldObj.label}
+                  fieldObj={fieldObj}
+                  onChange={handleChange}
+                />
+              );
+              // generateInputField
+            })}
 
-            <Button>Create Board</Button>
+            <Button type="submit">Create Board</Button>
           </form>
         )}
       </Formik>
     </div>
   );
 };
-
-export default CreateBoardPage;

@@ -9,9 +9,11 @@
 body {
   font-family: "Roboto";
   margin: 0 auto;
-  width: 92vw;
-}
+  width: 90vw;
+  margin-bottom: 80px;
+  min-height: 100vh;
 
-.app-container {
-  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
