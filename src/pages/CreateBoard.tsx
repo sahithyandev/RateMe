@@ -4,7 +4,6 @@ import { Formik } from "formik";
 import { Button } from "./../components/Button";
 import { FormObj } from "./../types";
 
-import "./../style/create-board.page.scss";
 import { ContentHeader } from "./../components/ContentHeader";
 import { InputField } from "./../components/InputField";
 

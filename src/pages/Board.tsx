@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import { ContentHeader } from "./../components/ContentHeader";
 import { Button } from "./../components/Button";
 import { InputField } from "./../components/InputField";
+import { Title } from "./../components/Title";
 
-import "./../style/board.page.scss";
 import { Formik } from "formik";
 interface BoardObj {
   name: string;
   description: string;
+  feedbackCount: number;
 }
 
 export const BoardPage = (props) => {
@@ -18,6 +19,7 @@ export const BoardPage = (props) => {
     name: "Michelle Lynn",
     description:
       "Urna ut volutpat egestas amet posuere pellentesque molestie sagittis nisi",
+    feedbackCount: 1,
   });
 
   const _form = {
@@ -55,9 +57,17 @@ export const BoardPage = (props) => {
   }, []);
 
   return (
-    <div className="page">
-      <div>
-        <ContentHeader title={boardData.name} content={boardData.description} />
+    <div className="page" id="board-page">
+      <div className="header">
+        {/**
+         * @abstract of {ContentHeader}
+         */}
+        <Title>{boardData.name}</Title>
+        <p className="content">{boardData.description}</p>
+        <div className="icon-container">
+          <span className="fas fa-comment"></span>
+          <span className="feedback-count">{boardData.feedbackCount}</span>
+        </div>
       </div>
       <Formik
         initialValues={_form.initialValues}

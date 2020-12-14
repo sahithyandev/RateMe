@@ -1,8 +1,6 @@
 import * as React from "react";
 import { InputFieldObj } from "./../types";
 
-import "./../style/input-field.component.scss";
-
 interface PropTypes {
   fieldObj: InputFieldObj;
   onChange: any;

@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import "./../style/button.component.scss";
-
 interface PropTypes {
   children: any;
   onClick?: () => void;
@@ -10,7 +8,7 @@ interface PropTypes {
 
 export const Button = ({ children, onClick, type }: PropTypes) => {
   return (
-    <button onClick={onClick} type={type} className="button">
+    <button onClick={onClick} type={type} className="button-component">
       {children}
     </button>
   );

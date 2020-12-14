@@ -3,9 +3,9 @@ import { Title } from "./Title";
 
 export const ContentHeader = ({ title, content }) => {
   return (
-    <div className="header">
+    <div className="content-header-component">
       <Title>{title}</Title>
-      <p>{content}</p>
+      <p className="content">{content}</p>
     </div>
   );
 };

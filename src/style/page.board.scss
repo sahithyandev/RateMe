@@ -1,0 +1,46 @@
+#board-page {
+  .header {
+    display: grid;
+    align-items: center;
+    column-gap: 12px;
+
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
+    grid-template-areas:
+      "title title"
+      "content icon";
+
+    .title-component {
+      grid-area: title;
+    }
+    .content {
+      grid-area: content;
+      margin-top: 0px;
+    }
+
+    .icon-container {
+      grid-area: icon;
+      position: relative;
+      // background-color: rgb(82, 245, 169);
+      .fa-comment {
+        font-size: 2.2em;
+        color: #6297e5;
+        position: relative;
+        bottom: -2px;
+      }
+      .feedback-count {
+        color: white;
+
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
+        width: fit-content;
+        height: fit-content;
+      }
+    }
+  }
+}
