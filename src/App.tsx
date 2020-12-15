@@ -2,8 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import { CreateBoardPage } from "./pages/CreateBoard";
-import { BoardPage } from "./pages/Board";
+import { CreateBoardPage, BoardPage } from "./pages";
 import "./style/main.scss";
 import "./style/main.scss";
 

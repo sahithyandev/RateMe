@@ -1,9 +1,6 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
-import { ContentHeader } from "./../components/ContentHeader";
-import { Button } from "./../components/Button";
-import { InputField } from "./../components/InputField";
-import { Title } from "./../components/Title";
+import { Title,InputField, Button } from "./../components";
 
 import { Formik } from "formik";
 interface BoardObj {
