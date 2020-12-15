@@ -6,8 +6,11 @@ import { Title, InputField, Button } from "./../components";
 import { log } from "./../global";
 import { BoardObj } from "./../types";
 
+// TODO: implement `unlocked` state
 export const BoardPage = (props) => {
   const { id: boardId } = useParams<{ id: string }>();
+  // TODO: revert to default
+  const [lockedState, setLockedState] = React.useState(true);
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "Michelle Lynn",
     description:
@@ -17,12 +20,19 @@ export const BoardPage = (props) => {
 
   const _form = {
     initialValues: {
-      passcode: "",
+      passcode: "sahithyan",
+      feedbackMsg: "",
     },
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
           log("form-values", values);
+
+          if (lockedState) {
+            // if locked; try to unlock it.
+            if (checkPasscode()) setLockedState(false);
+          } else {
+          }
           setSubmitting(false);
         }, 400);
       },
@@ -32,6 +42,10 @@ export const BoardPage = (props) => {
         label: "passcode",
         placeholder: "",
         description: "Contact the creator of this board, to get the passcode.",
+      },
+      feedbackMsg: {
+        label: "feedback message",
+        placeholder: "Enter your message here",
       },
     },
   };
@@ -62,20 +76,30 @@ export const BoardPage = (props) => {
           <span className="feedback-count">{boardData.feedbackCount}</span>
         </div>
       </div>
+      {lockedState ? null : (
+        <div className="info">
+          <span className="fas fa-info-circle"></span>
+          <span>Be honest. You are anonymous here.</span>
+        </div>
+      )}
       <Formik
         initialValues={_form.initialValues}
         onSubmit={_form.handlers.onSumbit}
       >
-        {({ values, handleChange, handleSubmit }) => (
-          <form>
-            <InputField
-              fieldObj={_form.inputFields.passcode}
-              onChange={handleChange}
-            />
+        {({ values, handleChange, handleSubmit }) =>
+          lockedState ? (
+            <form>
+              <InputField
+                fieldObj={_form.inputFields.passcode}
+                onChange={handleChange}
+                value={values.passcode}
+                type="password"
+              />
 
-            <Button onClick={handleSubmit}>proceed</Button>
-          </form>
-        )}
+              <Button onClick={handleSubmit}>proceed</Button>
+            </form>
+          ) : null
+        }
       </Formik>
     </div>
   );

@@ -16,6 +16,7 @@
     .content {
       grid-area: content;
       margin-top: 0px;
+      margin-bottom: 10px;
     }
 
     .icon-container {
@@ -41,6 +42,19 @@
         width: fit-content;
         height: fit-content;
       }
+    }
+  }
+
+  .info {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 1em;
+    font-weight: 300;
+    .fa-info-circle {
+      font-size: 1.1em;
+      color: rgba(black, 0.5);
     }
   }
 }
