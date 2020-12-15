@@ -23,3 +23,13 @@ export interface FormObj {
   handlers: FormHandlersObj;
   inputFields: InputFieldObj[];
 }
+
+export interface BoardObj {
+  name: string;
+  description: string;
+  feedbackCount: number;
+}
+
+export interface FeedbackObj {
+  message: string;
+}

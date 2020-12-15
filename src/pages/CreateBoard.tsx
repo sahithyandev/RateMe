@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Formik } from "formik";
-
-import { Button } from "./../components/Button";
 import { FormObj } from "./../types";
 
-import { ContentHeader,InputField } from "./../components";
+import { ContentHeader, InputField, Button } from "./../components";
+import { log } from "./../global";
 
 export const CreateBoardPage = (props) => {
   const _form: FormObj = {
@@ -17,7 +16,7 @@ export const CreateBoardPage = (props) => {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
-          console.log("form-values", values);
+          log("form-values", values);
           setSubmitting(false);
         }, 400);
       },

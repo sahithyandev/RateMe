@@ -1,17 +1,13 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
-import { Title,InputField, Button } from "./../components";
-
 import { Formik } from "formik";
-interface BoardObj {
-  name: string;
-  description: string;
-  feedbackCount: number;
-}
+
+import { Title, InputField, Button } from "./../components";
+import { log } from "./../global";
+import { BoardObj } from "./../types";
 
 export const BoardPage = (props) => {
-  //@ts-ignore
-  const { id: boardId } = useParams();
+  const { id: boardId } = useParams<{ id: string }>();
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "Michelle Lynn",
     description:
@@ -26,7 +22,7 @@ export const BoardPage = (props) => {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
-          console.log("form-values", values);
+          log("form-values", values);
           setSubmitting(false);
         }, 400);
       },
@@ -46,7 +42,7 @@ export const BoardPage = (props) => {
   };
 
   const fetchData = () => {
-    // get data from firebase
+    // TODO: implement this function
   };
 
   React.useEffect(() => {
