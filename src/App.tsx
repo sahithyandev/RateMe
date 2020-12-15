@@ -2,8 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import { CreateBoardPage, BoardPage, FeedbacksPage } from "./pages";
-import "./style/main.scss";
+import { CreateBoardPage, BoardPage, FeedbacksPage } from "./pages/index";
+import "./style/import.ant.less";
 import "./style/main.scss";
 
 export const App = () => {

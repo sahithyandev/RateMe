@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Formik } from "formik";
-import { FormObj } from "./../types";
+import { Button } from "antd";
 
-import { ContentHeader, InputField, Button } from "./../components";
+import { ContentHeader, InputField } from "./../components";
 import { log } from "./../global";
+import { FormObj } from "./../types";
 
 export const CreateBoardPage = (props) => {
   const _form: FormObj = {
@@ -67,7 +68,9 @@ export const CreateBoardPage = (props) => {
               // generateInputField
             })}
 
-            <Button type="submit">Create Board</Button>
+            <Button type="primary" size="large">
+              create board
+            </Button>
           </form>
         )}
       </Formik>

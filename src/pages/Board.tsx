@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
+import { Button } from "antd";
 
-import { Title, InputField, Button } from "./../components";
+import { Title, InputField } from "./../components";
 import { log } from "./../global";
 import { BoardObj } from "./../types";
 
@@ -95,8 +96,15 @@ export const BoardPage = (props) => {
                 value={values.passcode}
                 type="password"
               />
-
-              <Button onClick={handleSubmit}>proceed</Button>
+              <Button
+                size="large"
+                onClick={() => {
+                  handleSubmit();
+                }}
+                type="primary"
+              >
+                proceed
+              </Button>
             </form>
           ) : null
         }
