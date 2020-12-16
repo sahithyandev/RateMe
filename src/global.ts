@@ -1,4 +1,4 @@
-import { FormObj, StrObject } from "~types";
+import { FormObj, StrObject } from "./types";
 
 export const log = (...msg: any[]) => {
   console.log(...msg);

@@ -7,6 +7,7 @@ import { FeedbackObj, BoardObj } from "./../types";
 
 const { Title, Text, Paragraph } = Typography;
 
+// TODO: Ask unlockKey before showing feedbacks
 export const FeedbacksPage = (props) => {
   const { id: boardId } = useParams<{ id: string }>();
   const [boardData, setBoardData] = React.useState<BoardObj>({
@@ -39,15 +40,23 @@ export const FeedbacksPage = (props) => {
   const generateFeedbackCard = (feedback: FeedbackObj) => {
     return (
       <div className="feedback-card">
-        <p className="content">{feedback.message}</p>
+        <Paragraph className="content">{feedback.message}</Paragraph>
       </div>
     );
+  };
+
+  const goBack = () => {
+    // TODO: implement go back functionality
+    log("not developed yet");
   };
 
   return (
     <div className="page" id="feedbacks-page">
       <div className="header">
-        <Title>{boardData.name}</Title>
+        <Title>
+          <span onClick={goBack} className="fas fa-arrow-left"></span>
+          {boardData.name}
+        </Title>
         <Paragraph>{boardData.description}</Paragraph>
       </div>
 
