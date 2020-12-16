@@ -1,6 +1,7 @@
 @import "./antd-override.scss";
 @import "./page.create-board.scss";
 @import "./page.board.scss";
+@import "./page.feedbacks.scss";
 
 @import "./component.button.scss";
 @import "./component.input-field.scss";
@@ -24,6 +25,19 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#app-root,
+.app-container {
+  height: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+.page {
+  margin-top: 40px;
 }
 
 .header {
