@@ -10,10 +10,10 @@
       "title title"
       "content icon";
 
-    .title-component {
+    h1.ant-typography {
       grid-area: title;
     }
-    .content {
+    div.ant-typography {
       grid-area: content;
       margin-top: 0px;
       margin-bottom: 10px;

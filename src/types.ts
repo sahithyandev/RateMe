@@ -13,15 +13,23 @@ export interface InputFieldObj {
   label: string;
   description?: string;
   placeholder?: string;
+  isMultiLine?: boolean;
+  isSecured?: boolean;
+  isRequired?: boolean;
+  initialValue: string;
+}
+
+export interface StrObject<Q> {
+  [key: string]: Q;
 }
 
 /**
  * A wrapper for Formik's values
  */
 export interface FormObj {
-  initialValues: object;
+  // initialValues: object;
   handlers: FormHandlersObj;
-  inputFields: InputFieldObj[];
+  inputFields: StrObject<InputFieldObj>;
 }
 
 export interface BoardObj {

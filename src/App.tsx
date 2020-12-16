@@ -26,4 +26,10 @@ export const App = () => {
   );
 };
 
+//@ts-ignore
+if (module.hot) {
+  //@ts-ignore
+  module.hot.accept();
+}
+
 ReactDOM.render(<App />, document.getElementById("app-root"));

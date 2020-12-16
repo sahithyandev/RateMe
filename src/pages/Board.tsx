@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
-import { Button } from "antd";
+import { Button, Typography, Form, Input } from "antd";
 
-import { Title, InputField } from "./../components";
-import { log } from "./../global";
-import { BoardObj } from "./../types";
+import { log, getInitialValues } from "./../global";
+import { BoardObj, FormObj } from "./../types";
+
+const { Title, Paragraph } = Typography;
 
 // TODO: implement `unlocked` state
 export const BoardPage = (props) => {
@@ -19,11 +20,7 @@ export const BoardPage = (props) => {
     feedbackCount: 1,
   });
 
-  const _form = {
-    initialValues: {
-      passcode: "sahithyan",
-      feedbackMsg: "",
-    },
+  const _form: FormObj = {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
@@ -43,8 +40,12 @@ export const BoardPage = (props) => {
         label: "passcode",
         placeholder: "",
         description: "Contact the creator of this board, to get the passcode.",
+        isSecured: true,
+        isRequired: true,
+        initialValue: "sahithyan",
       },
       feedbackMsg: {
+        initialValue: "",
         label: "feedback message",
         placeholder: "Enter your message here",
       },
@@ -67,11 +68,9 @@ export const BoardPage = (props) => {
   return (
     <div className="page" id="board-page">
       <div className="header">
-        {/**
-         * @abstract of {ContentHeader}
-         */}
         <Title>{boardData.name}</Title>
-        <p className="content">{boardData.description}</p>
+        <Paragraph>{boardData.description}</Paragraph>
+
         <div className="icon-container">
           <span className="fas fa-comment"></span>
           <span className="feedback-count">{boardData.feedbackCount}</span>
@@ -84,30 +83,49 @@ export const BoardPage = (props) => {
         </div>
       )}
       <Formik
-        initialValues={_form.initialValues}
+        initialValues={getInitialValues(_form)}
         onSubmit={_form.handlers.onSumbit}
       >
-        {({ values, handleChange, handleSubmit }) =>
-          lockedState ? (
-            <form>
-              <InputField
-                fieldObj={_form.inputFields.passcode}
-                onChange={handleChange}
-                value={values.passcode}
-                type="password"
-              />
+        {({ values, handleChange, handleSubmit }) => {
+          const inputFieldId = "passcode";
+          const selectedInputField = _form.inputFields[inputFieldId];
+          return lockedState ? (
+            <Form>
+              <Form.Item
+                label={selectedInputField.label}
+                key={selectedInputField.label}
+                rules={[
+                  {
+                    required: true,
+                    message: `Please input ${selectedInputField.label}`,
+                  },
+                ]}
+              >
+                <Input
+                  name={inputFieldId}
+                  required={selectedInputField.isRequired}
+                  onChange={handleChange}
+                  placeholder={selectedInputField.placeholder}
+                  type={selectedInputField.isSecured ? "password" : "text"}
+                  value={values[inputFieldId]}
+                />
+                <p className="form-item-description">
+                  {selectedInputField.description}
+                </p>
+              </Form.Item>
               <Button
                 size="large"
                 onClick={() => {
                   handleSubmit();
                 }}
                 type="primary"
+                htmlType="submit"
               >
                 proceed
               </Button>
-            </form>
-          ) : null
-        }
+            </Form>
+          ) : null;
+        }}
       </Formik>
     </div>
   );
