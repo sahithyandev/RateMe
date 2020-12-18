@@ -1,18 +1,18 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
-import { Button, Typography, Form, Input } from "antd";
+import { Button, Typography, Form, Input, Modal } from "antd";
 
-import { log, getInitialValues } from "./../global";
-import { BoardObj, FormObj } from "./../types";
+import { getInitialValues } from "./../global";
+import { BoardObj, FormObj, InputFieldObj } from "./../types";
+import { ModalForm } from "./../componenets/ModalForm";
 
 const { Title, Paragraph } = Typography;
+const { TextArea } = Input;
 
-// TODO: implement `unlocked` state
 export const BoardPage = (props) => {
   const { id: boardId } = useParams<{ id: string }>();
-  // TODO: revert to default
-  const [lockedState, setLockedState] = React.useState(true);
+  const [isLocked, setIsLocked] = React.useState(true);
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "Michelle Lynn",
     description:
@@ -20,39 +20,27 @@ export const BoardPage = (props) => {
     feedbackCount: 1,
   });
 
-  const _form: FormObj = {
+  const mainForm: FormObj = {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
-          log("form-values", values);
-
-          if (lockedState) {
-            // if locked; try to unlock it.
-            if (checkPasscode()) setLockedState(false);
-          } else {
-          }
+          console.log("form-values-main", values);
           setSubmitting(false);
         }, 400);
       },
     },
     inputFields: {
-      passcode: {
-        label: "passcode",
-        placeholder: "",
-        description: "Contact the creator of this board, to get the passcode.",
-        isSecured: true,
-        isRequired: true,
-        initialValue: "sahithyan",
-      },
       feedbackMsg: {
         initialValue: "",
         label: "feedback message",
         placeholder: "Enter your message here",
+        isMultiLine: true,
+        className: "feedback-msg-input",
       },
     },
   };
 
-  const checkPasscode = () => {
+  const checkPasscode = (passcode: string) => {
     // check it on firebase's cloud functions
     return true;
   };
@@ -61,9 +49,26 @@ export const BoardPage = (props) => {
     // TODO: implement this function
   };
 
+  const handleUnlock = ({ passcode }) => {
+    if (checkPasscode(passcode)) {
+      setIsLocked(false);
+    } else {
+      setIsLocked(true);
+    }
+  };
+
   React.useEffect(() => {
     fetchData();
   }, []);
+
+  const passcodeInput: InputFieldObj = {
+    label: "passcode",
+    placeholder: "",
+    description: "Contact the creator of this board, to get the passcode.",
+    isRequired: true,
+    initialValue: "",
+    type: "password",
+  };
 
   return (
     <div className="page" id="board-page">
@@ -76,20 +81,32 @@ export const BoardPage = (props) => {
           <span className="feedback-count">{boardData.feedbackCount}</span>
         </div>
       </div>
-      {lockedState ? null : (
-        <div className="info">
-          <span className="fas fa-info-circle"></span>
-          <span>Be honest. You are anonymous here.</span>
-        </div>
-      )}
+      <ModalForm
+        onSubmit={handleUnlock}
+        inputField={passcodeInput}
+        modalProps={{
+          visible: isLocked,
+          title: "Passcode Required",
+          closable: false,
+          onCancel: () => {
+            console.log("can't close");
+          },
+        }}
+      ></ModalForm>
+
+      <div className="info">
+        <span className="fas fa-info-circle"></span>
+        <span>Be honest. You are anonymous here.</span>
+      </div>
+
       <Formik
-        initialValues={getInitialValues(_form)}
-        onSubmit={_form.handlers.onSumbit}
+        initialValues={getInitialValues(mainForm)}
+        onSubmit={mainForm.handlers.onSumbit}
       >
         {({ values, handleChange, handleSubmit }) => {
-          const inputFieldId = "passcode";
-          const selectedInputField = _form.inputFields[inputFieldId];
-          return lockedState ? (
+          const inputFieldId = "feedbackMsg";
+          const selectedInputField = mainForm.inputFields[inputFieldId];
+          return isLocked ? null : (
             <Form>
               <Form.Item
                 label={selectedInputField.label}
@@ -101,14 +118,16 @@ export const BoardPage = (props) => {
                   },
                 ]}
               >
-                <Input
+                <TextArea
                   name={inputFieldId}
                   required={selectedInputField.isRequired}
-                  onChange={handleChange}
                   placeholder={selectedInputField.placeholder}
-                  type={selectedInputField.isSecured ? "password" : "text"}
+                  onChange={handleChange}
+                  className={selectedInputField.className}
                   value={values[inputFieldId]}
+                  autoSize={true}
                 />
+
                 <p className="form-item-description">
                   {selectedInputField.description}
                 </p>
@@ -121,10 +140,10 @@ export const BoardPage = (props) => {
                 type="primary"
                 htmlType="submit"
               >
-                proceed
+                submit
               </Button>
             </Form>
-          ) : null;
+          );
         }}
       </Formik>
     </div>

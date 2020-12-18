@@ -1,5 +1,5 @@
 #board-page {
-  margin: auto 0;
+  margin: auto 0 0;
 
   .header {
     display: grid;
@@ -59,4 +59,12 @@
       color: rgba(black, 0.5);
     }
   }
+  .feedback-msg-input {
+    min-height: 200px;
+  }
+}
+
+.ant-modal-body {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }

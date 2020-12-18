@@ -4,6 +4,10 @@
   font-family: "Roboto Mono";
   width: fit-content;
   height: fit-content;
+  height: -moz-fit-content;
+
+  font-size: 1em;
+  padding: 8px 18px;
 }
 
 .ant-btn-lg {

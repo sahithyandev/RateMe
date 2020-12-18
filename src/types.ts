@@ -10,13 +10,16 @@ export interface FormHandlersObj {
 }
 
 export interface InputFieldObj {
+  name?: string;
   label: string;
+  type?: string;
   description?: string;
   placeholder?: string;
   isMultiLine?: boolean;
   isSecured?: boolean;
   isRequired?: boolean;
   initialValue: string;
+  className?: string;
 }
 
 export interface StrObject<Q> {
