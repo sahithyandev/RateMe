@@ -1,7 +1,9 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
-import { Button, Typography, Form, Input, Modal } from "antd";
+import { Button, Typography, Form, Input } from "antd";
+
+import firebase from "firebase";
 
 import { getInitialValues } from "./../global";
 import { BoardObj, FormObj, InputFieldObj } from "./../types";
@@ -12,12 +14,13 @@ const { TextArea } = Input;
 
 export const BoardPage = (props) => {
   const { id: boardId } = useParams<{ id: string }>();
-  const [isLocked, setIsLocked] = React.useState(true);
+  const [isLocked, setIsLocked] = React.useState(false);
   const [boardData, setBoardData] = React.useState<BoardObj>({
-    name: "Michelle Lynn",
-    description:
-      "Urna ut volutpat egestas amet posuere pellentesque molestie sagittis nisi",
-    feedbackCount: 1,
+    name: "",
+    description: "",
+    password: "",
+    unlockKey: "",
+    feedbackCount: 0,
   });
 
   const mainForm: FormObj = {
@@ -25,6 +28,8 @@ export const BoardPage = (props) => {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
           console.log("form-values-main", values);
+          // TODO: Send data to firebase
+          // also update the feedbackCount
           setSubmitting(false);
         }, 400);
       },
@@ -45,8 +50,29 @@ export const BoardPage = (props) => {
     return true;
   };
 
-  const fetchData = () => {
-    // TODO: implement this function
+  const fetchData = async () => {
+    if (boardId) {
+      const boardRef = firebase.firestore().collection("boards").doc(boardId);
+      const board = await boardRef.get();
+      if (!board.exists) {
+        console.log("No Boards found");
+        setBoardData({
+          name: "Board Not Found",
+          description: "Blah blah blah...",
+          feedbackCount: 0,
+          password: "",
+          unlockKey: "",
+        });
+        return;
+      }
+      console.log("Board details", board.data());
+      setBoardData(board.data() as BoardObj);
+      // const feedbacksRef = docRef.collection("feedbacks");
+      // const feedbacksArr = await feedbacksRef.get();
+      // const y = [];
+      // const x = feedbacksArr.forEach((snap) => y.push(snap.data()));
+      // console.log(y);
+    }
   };
 
   const handleUnlock = ({ passcode }) => {
@@ -106,44 +132,49 @@ export const BoardPage = (props) => {
         {({ values, handleChange, handleSubmit }) => {
           const inputFieldId = "feedbackMsg";
           const selectedInputField = mainForm.inputFields[inputFieldId];
-          return isLocked ? null : (
-            <Form>
-              <Form.Item
-                label={selectedInputField.label}
-                key={selectedInputField.label}
-                rules={[
-                  {
-                    required: true,
-                    message: `Please input ${selectedInputField.label}`,
-                  },
-                ]}
-              >
-                <TextArea
-                  name={inputFieldId}
-                  required={selectedInputField.isRequired}
-                  placeholder={selectedInputField.placeholder}
-                  onChange={handleChange}
-                  className={selectedInputField.className}
-                  value={values[inputFieldId]}
-                  autoSize={true}
-                />
 
-                <p className="form-item-description">
-                  {selectedInputField.description}
-                </p>
-              </Form.Item>
-              <Button
-                size="large"
-                onClick={() => {
-                  handleSubmit();
-                }}
-                type="primary"
-                htmlType="submit"
-              >
-                submit
-              </Button>
-            </Form>
-          );
+          {
+            return isLocked ? (
+              <div className="form" />
+            ) : (
+              <Form className="form">
+                <Form.Item
+                  label={selectedInputField.label}
+                  key={selectedInputField.label}
+                  rules={[
+                    {
+                      required: true,
+                      message: `Please input ${selectedInputField.label}`,
+                    },
+                  ]}
+                >
+                  <TextArea
+                    name={inputFieldId}
+                    required={selectedInputField.isRequired}
+                    placeholder={selectedInputField.placeholder}
+                    onChange={handleChange}
+                    className={selectedInputField.className}
+                    value={values[inputFieldId]}
+                    autoSize={true}
+                  />
+
+                  <p className="form-item-description">
+                    {selectedInputField.description}
+                  </p>
+                </Form.Item>
+                <Button
+                  size="large"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  submit
+                </Button>
+              </Form>
+            );
+          }
         }}
       </Formik>
     </div>

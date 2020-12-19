@@ -38,6 +38,8 @@ export interface FormObj {
 export interface BoardObj {
   name: string;
   description: string;
+  password: string;
+  unlockKey: string;
   feedbackCount: number;
 }
 
