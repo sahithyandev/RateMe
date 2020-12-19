@@ -19,7 +19,7 @@ export const FeedbacksPage = (props) => {
     name: "",
     description: "",
     unlockKey: "",
-    password: "",
+    passcode: "",
     feedbackCount: 0,
   });
   const [feedbacks, setFeedbacks] = React.useState<FeedbackObj[]>([]);
@@ -34,23 +34,11 @@ export const FeedbacksPage = (props) => {
   };
 
   const fetchFeedbacks = async () => {
-    // TODO: implement this function
     if (boardId) {
       const feedbacks = await firebaseManager.getFeedbacks(boardId);
       setFeedbacks(feedbacks);
     }
     return;
-
-    // return [
-    //   {
-    //     message:
-    //       "Nice guy. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur ipsa quis minus nostrum laboriosam vero harum itaque vitae laudantium doloremque.",
-    //   },
-    //   {
-    //     message:
-    //       "Tenetur ipsa quis minus nostrum laboriosam vero harum itaque vitae laudantium doloremque.",
-    //   },
-    // ];
   };
 
   React.useEffect(() => {
@@ -74,9 +62,8 @@ export const FeedbacksPage = (props) => {
     type: "password",
   };
 
-  const checkUnlockKey = (unlockKey) => {
-    return true;
-  };
+  const checkUnlockKey = (unlockKey: string) =>
+    boardData.unlockKey === unlockKey;
 
   const onSubmit = ({ unlockKey }) => {
     if (checkUnlockKey(unlockKey)) {

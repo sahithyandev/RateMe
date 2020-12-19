@@ -4,8 +4,7 @@ import { Formik } from "formik";
 import { Button, Typography, Form, Input } from "antd";
 import { Link } from "react-router-dom";
 
-import firebase from "firebase";
-import { FirebaseContext, FirebaseManager } from "./../firebase-manager";
+import { FirebaseContext } from "./../firebase-manager";
 
 import { getInitialValues } from "./../global";
 import { BoardObj, FormObj, InputFieldObj } from "./../types";
@@ -22,7 +21,7 @@ export const BoardPage = (props) => {
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "",
     description: "",
-    password: "",
+    passcode: "",
     unlockKey: "",
     feedbackCount: 0,
   });
@@ -49,10 +48,7 @@ export const BoardPage = (props) => {
     },
   };
 
-  const checkPasscode = (passcode: string) => {
-    // check it on firebase's cloud functions
-    return true;
-  };
+  const checkPasscode = (passcode: string) => passcode === boardData.passcode;
 
   const fetchBoardData = async () => {
     if (boardId) {

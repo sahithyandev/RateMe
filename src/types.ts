@@ -38,7 +38,7 @@ export interface FormObj {
 export interface BoardObj {
   name: string;
   description: string;
-  password: string;
+  passcode: string;
   unlockKey: string;
   feedbackCount: number;
 }
