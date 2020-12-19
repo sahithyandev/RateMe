@@ -2,8 +2,10 @@ import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { Button, Typography, Form, Input } from "antd";
+import { Link } from "react-router-dom";
 
 import firebase from "firebase";
+import { FirebaseContext, FirebaseManager } from "./../firebase-manager";
 
 import { getInitialValues } from "./../global";
 import { BoardObj, FormObj, InputFieldObj } from "./../types";
@@ -13,6 +15,8 @@ const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
 
 export const BoardPage = (props) => {
+  const firebaseManager = React.useContext(FirebaseContext);
+
   const { id: boardId } = useParams<{ id: string }>();
   const [isLocked, setIsLocked] = React.useState(false);
   const [boardData, setBoardData] = React.useState<BoardObj>({
@@ -50,29 +54,12 @@ export const BoardPage = (props) => {
     return true;
   };
 
-  const fetchData = async () => {
+  const fetchBoardData = async () => {
     if (boardId) {
-      const boardRef = firebase.firestore().collection("boards").doc(boardId);
-      const board = await boardRef.get();
-      if (!board.exists) {
-        console.log("No Boards found");
-        setBoardData({
-          name: "Board Not Found",
-          description: "Blah blah blah...",
-          feedbackCount: 0,
-          password: "",
-          unlockKey: "",
-        });
-        return;
-      }
-      console.log("Board details", board.data());
-      setBoardData(board.data() as BoardObj);
-      // const feedbacksRef = docRef.collection("feedbacks");
-      // const feedbacksArr = await feedbacksRef.get();
-      // const y = [];
-      // const x = feedbacksArr.forEach((snap) => y.push(snap.data()));
-      // console.log(y);
+      const board = await firebaseManager.getBoard(boardId);
+      setBoardData(board);
     }
+    return;
   };
 
   const handleUnlock = ({ passcode }) => {
@@ -84,7 +71,7 @@ export const BoardPage = (props) => {
   };
 
   React.useEffect(() => {
-    fetchData();
+    fetchBoardData();
   }, []);
 
   const passcodeInput: InputFieldObj = {
@@ -102,10 +89,12 @@ export const BoardPage = (props) => {
         <Title>{boardData.name}</Title>
         <Paragraph>{boardData.description}</Paragraph>
 
-        <div className="icon-container">
-          <span className="fas fa-comment"></span>
-          <span className="feedback-count">{boardData.feedbackCount}</span>
-        </div>
+        <Link to={`/board/${boardId}/feedbacks`}>
+          <div className="icon-container">
+            <span className="fas fa-comment"></span>
+            <span className="feedback-count">{boardData.feedbackCount}</span>
+          </div>
+        </Link>
       </div>
       <ModalForm
         onSubmit={handleUnlock}

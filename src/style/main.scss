@@ -3,10 +3,8 @@
 @import "./page.board.scss";
 @import "./page.feedbacks.scss";
 
-@import "./component.button.scss";
-@import "./component.input-field.scss";
-@import "./component.title.scss";
-@import "./component.content-header.scss";
+@import "./component.feedback-card.scss";
+
 * {
   box-sizing: border-box;
 }

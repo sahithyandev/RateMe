@@ -2,6 +2,8 @@ import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Typography } from "antd";
 
+import { FirebaseContext } from "./../firebase-manager";
+
 import { FeedbackObj, BoardObj, InputFieldObj } from "./../types";
 import { ModalForm } from "./../componenets/ModalForm";
 import { FeedbackCard } from "./../componenets/FeedbackCard";
@@ -9,33 +11,51 @@ import { FeedbackCard } from "./../componenets/FeedbackCard";
 const { Title, Text, Paragraph } = Typography;
 
 export const FeedbacksPage = (props) => {
+  const firebaseManager = React.useContext(FirebaseContext);
+
   const { id: boardId } = useParams<{ id: string }>();
-  const [isLocked, setIsLocked] = React.useState(true);
+  const [isLocked, setIsLocked] = React.useState(false);
   const [boardData, setBoardData] = React.useState<BoardObj>({
-    name: "Michelle Lynn",
-    description:
-      "Urna ut volutpat egestas amet posuere pellentesque molestie sagittis nisi",
-    feedbackCount: 2,
+    name: "",
+    description: "",
+    unlockKey: "",
+    password: "",
+    feedbackCount: 0,
   });
   const [feedbacks, setFeedbacks] = React.useState<FeedbackObj[]>([]);
   console.log(boardId);
 
-  const fetchData = (): FeedbackObj[] => {
+  const fetchBoardData = async () => {
+    if (boardId) {
+      const board = await firebaseManager.getBoard(boardId);
+      setBoardData(board);
+    }
+    return;
+  };
+
+  const fetchFeedbacks = async () => {
     // TODO: implement this function
-    return [
-      {
-        message:
-          "Nice guy. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur ipsa quis minus nostrum laboriosam vero harum itaque vitae laudantium doloremque.",
-      },
-      {
-        message:
-          "Tenetur ipsa quis minus nostrum laboriosam vero harum itaque vitae laudantium doloremque.",
-      },
-    ];
+    if (boardId) {
+      const feedbacks = await firebaseManager.getFeedbacks(boardId);
+      setFeedbacks(feedbacks);
+    }
+    return;
+
+    // return [
+    //   {
+    //     message:
+    //       "Nice guy. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur ipsa quis minus nostrum laboriosam vero harum itaque vitae laudantium doloremque.",
+    //   },
+    //   {
+    //     message:
+    //       "Tenetur ipsa quis minus nostrum laboriosam vero harum itaque vitae laudantium doloremque.",
+    //   },
+    // ];
   };
 
   React.useEffect(() => {
-    setFeedbacks(fetchData());
+    fetchBoardData();
+    fetchFeedbacks();
   }, []);
 
   const goBack = () => {
@@ -73,11 +93,9 @@ export const FeedbacksPage = (props) => {
         inputField={unlockKeyInput}
         onSubmit={onSubmit}
       />
+      <span onClick={goBack} className="fas fa-arrow-left pointable"></span>
       <div className="header">
-        <Title>
-          <span onClick={goBack} className="fas fa-arrow-left pointable"></span>
-          {boardData.name}
-        </Title>
+        <Title>{boardData.name}</Title>
         <Paragraph>{boardData.description}</Paragraph>
       </div>
 

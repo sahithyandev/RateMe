@@ -6,6 +6,9 @@
     "start": "PORT=3000 parcel index.html",
     "build": "parcel build index.html"
   },
+  "browserslist": [
+    "since 2017-06"
+  ],
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
     "@babel/preset-env": "^7.12.10",
@@ -26,6 +29,7 @@
     "formik": "^2.2.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "regenerator-runtime": "^0.13.7"
   }
 }
