@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { RouteComponentProps, useParams } from "react-router-dom";
 import { Typography } from "antd";
 
 import { FirebaseContext } from "./../firebase-manager";
@@ -10,7 +10,7 @@ import { FeedbackCard } from "./../componenets/FeedbackCard";
 
 const { Title, Text, Paragraph } = Typography;
 
-export const FeedbacksPage = (props) => {
+export const FeedbacksPage = (props: RouteComponentProps) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
   const { id: boardId } = useParams<{ id: string }>();
@@ -23,7 +23,6 @@ export const FeedbacksPage = (props) => {
     feedbackCount: 0,
   });
   const [feedbacks, setFeedbacks] = React.useState<FeedbackObj[]>([]);
-  console.log(boardId);
 
   const fetchBoardData = async () => {
     if (boardId) {
@@ -47,8 +46,7 @@ export const FeedbacksPage = (props) => {
   }, []);
 
   const goBack = () => {
-    // TODO: implement go back functionality
-    console.log("not developed yet");
+    props.history.goBack();
   };
 
   const unlockKeyInput: InputFieldObj = {

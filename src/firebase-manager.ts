@@ -14,8 +14,6 @@ export class FirebaseManager {
   constructor(firebaseConfig) {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
-    } else {
-      console.log(firebase);
     }
   }
 

@@ -17,15 +17,9 @@ export const App = () => {
       <FirebaseContext.Provider value={new FirebaseManager(firebaseConfig)}>
         <BrowserRouter>
           <Switch>
-            <Route path="/create">
-              <CreateBoardPage />
-            </Route>
-            <Route path="/board/:id/feedbacks">
-              <FeedbacksPage />
-            </Route>
-            <Route path="/board/:id">
-              <BoardPage />
-            </Route>
+            <Route path="/create" component={CreateBoardPage} />
+            <Route path="/board/:id/feedbacks" component={FeedbacksPage} />
+            <Route path="/board/:id" component={BoardPage} />
           </Switch>
         </BrowserRouter>
       </FirebaseContext.Provider>
