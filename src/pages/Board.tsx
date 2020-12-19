@@ -13,6 +13,8 @@ import { ModalForm } from "./../componenets/ModalForm";
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
 
+// TODO Set isLocked to true again
+// and develop that part.
 export const BoardPage = (props) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
@@ -55,7 +57,6 @@ export const BoardPage = (props) => {
   const mainForm: FormObj = {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
-        console.log("form-values", values);
         firebaseManager.addFeedback(boardId, {
           message: values["feedbackMsg"],
         });
@@ -96,7 +97,7 @@ export const BoardPage = (props) => {
           title: "Passcode Required",
           closable: false,
           onCancel: () => {
-            console.log("can't close");
+            console.log("can't close modal");
           },
         }}
       ></ModalForm>
@@ -118,7 +119,7 @@ export const BoardPage = (props) => {
             return isLocked ? (
               <div className="form" />
             ) : (
-              <Form className="form">
+              <Form className="form" onSubmitCapture={handleSubmit}>
                 <Form.Item
                   label={selectedInputField.label}
                   key={selectedInputField.label}
@@ -143,14 +144,7 @@ export const BoardPage = (props) => {
                     {selectedInputField.description}
                   </p>
                 </Form.Item>
-                <Button
-                  size="large"
-                  onClick={() => {
-                    handleSubmit();
-                  }}
-                  type="primary"
-                  htmlType="submit"
-                >
+                <Button size="large" type="primary" htmlType="submit">
                   submit
                 </Button>
               </Form>

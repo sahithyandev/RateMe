@@ -53,12 +53,19 @@ export class FirebaseManager {
     });
   }
 
+  createBoard(boardData: BoardObj) {
+    this._getBoardsCollectionRef().add(boardData);
+  }
+
   /** Protected Utility Methods */
-  _getBoardRef(boardId: string) {
+  _getBoardsCollectionRef() {
     return firebase
       .firestore()
-      .collection(FirebaseManager.BOARDS_COLLECTION_PATH)
-      .doc(boardId);
+      .collection(FirebaseManager.BOARDS_COLLECTION_PATH);
+  }
+
+  _getBoardRef(boardId: string) {
+    return this._getBoardsCollectionRef().doc(boardId);
   }
 
   _querySnapshotToArray(querySnapshot: QuerySnapshot<DocumentData>) {

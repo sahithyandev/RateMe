@@ -1,21 +1,26 @@
 import * as React from "react";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import { Button, Form, Input, Typography } from "antd";
 
 import { getInitialValues } from "./../global";
 import { FormObj } from "./../types";
+import { FirebaseContext } from "./../firebase-manager";
 
 const { TextArea } = Input;
 const { Title, Paragraph } = Typography;
 
 export const CreateBoardPage = (props) => {
+  const firebaseManager = React.useContext(FirebaseContext);
+
   const _form: FormObj = {
     handlers: {
-      onSumbit: (values: any, { setSubmitting }: any) => {
+      onSumbit: (values: any, { setSubmitting }: FormikHelpers<any>) => {
         setTimeout(() => {
-          console.log("form-values", values);
           setSubmitting(false);
         }, 400);
+
+        firebaseManager.createBoard({ ...values, feedbackCount: 0 });
+        // TODO show the "success" message
       },
     },
     inputFields: {
@@ -34,7 +39,7 @@ export const CreateBoardPage = (props) => {
         isSecured: true,
         isRequired: true,
         description:
-          "Share this code with your friends, they need this to give their feedback.",
+          "Share this code with your friends, they need this code to give their feedback.",
         initialValue: "",
       },
       unlockKey: {
@@ -63,6 +68,7 @@ export const CreateBoardPage = (props) => {
       <div className="header">
         <Title>Create Board</Title>
         <Paragraph>
+          {/* TODO Show a useful message here */}
           Urna ut volutpat egestas amet posuere pellentesque molestie sagittis
           nisi
         </Paragraph>
@@ -73,10 +79,15 @@ export const CreateBoardPage = (props) => {
         onSubmit={_form.handlers.onSumbit}
       >
         {({ values, handleSubmit, handleChange }) => (
-          <Form onSubmitCapture={handleSubmit} layout="vertical">
+          <Form
+            onSubmitCapture={handleSubmit}
+            layout="vertical"
+            requiredMark={true}
+          >
             {Object.entries(_form.inputFields).map(([fieldName, fieldObj]) => {
               return (
                 <Form.Item
+                  required={fieldObj.isRequired}
                   label={fieldObj.label}
                   key={fieldObj.label}
                   rules={[
@@ -92,6 +103,7 @@ export const CreateBoardPage = (props) => {
                       onChange={handleChange}
                       placeholder={fieldObj.placeholder}
                       required={fieldObj.isRequired}
+                      value={values[fieldName]}
                     />
                   ) : (
                     <Input
@@ -100,6 +112,7 @@ export const CreateBoardPage = (props) => {
                       placeholder={fieldObj.placeholder}
                       required={fieldObj.isRequired}
                       type={fieldObj.isSecured ? "password" : "text"}
+                      value={values[fieldName]}
                     />
                   )}
                   <p className="form-item-description">
@@ -110,14 +123,7 @@ export const CreateBoardPage = (props) => {
             })}
 
             <Form.Item>
-              <Button
-                type="primary"
-                size="large"
-                htmlType="submit"
-                onClick={() => {
-                  handleSubmit();
-                }}
-              >
+              <Button type="primary" size="large" htmlType="submit">
                 create board
               </Button>
             </Form.Item>

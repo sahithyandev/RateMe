@@ -29,7 +29,6 @@ export const App = () => {
 
 //@ts-ignore
 if (module.hot) {
-  console.log("module-hot");
   //@ts-ignore
   module.hot.accept();
 }

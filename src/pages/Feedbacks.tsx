@@ -10,6 +10,8 @@ import { FeedbackCard } from "./../componenets/FeedbackCard";
 
 const { Title, Text, Paragraph } = Typography;
 
+// TODO Set isLocked to true again
+// and develop that part.
 export const FeedbacksPage = (props: RouteComponentProps) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
