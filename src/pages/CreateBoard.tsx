@@ -2,7 +2,7 @@ import * as React from "react";
 import { Formik } from "formik";
 import { Button, Form, Input, Typography } from "antd";
 
-import { log, getInitialValues } from "./../global";
+import { getInitialValues } from "./../global";
 import { FormObj } from "./../types";
 
 const { TextArea } = Input;
@@ -13,7 +13,7 @@ export const CreateBoardPage = (props) => {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
         setTimeout(() => {
-          log("form-values", values);
+          console.log("form-values", values);
           setSubmitting(false);
         }, 400);
       },
@@ -59,7 +59,7 @@ export const CreateBoardPage = (props) => {
   };
 
   return (
-    <div className="page">
+    <div className="page" id="create-board-page">
       <div className="header">
         <Title>Create Board</Title>
         <Paragraph>

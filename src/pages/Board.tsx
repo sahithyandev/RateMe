@@ -26,28 +26,6 @@ export const BoardPage = (props) => {
     feedbackCount: 0,
   });
 
-  const mainForm: FormObj = {
-    handlers: {
-      onSumbit: (values: any, { setSubmitting }: any) => {
-        setTimeout(() => {
-          console.log("form-values-main", values);
-          // TODO: Send data to firebase
-          // also update the feedbackCount
-          setSubmitting(false);
-        }, 400);
-      },
-    },
-    inputFields: {
-      feedbackMsg: {
-        initialValue: "",
-        label: "feedback message",
-        placeholder: "Enter your message here",
-        isMultiLine: true,
-        className: "feedback-msg-input",
-      },
-    },
-  };
-
   const checkPasscode = (passcode: string) => passcode === boardData.passcode;
 
   const fetchBoardData = async () => {
@@ -59,11 +37,7 @@ export const BoardPage = (props) => {
   };
 
   const handleUnlock = ({ passcode }) => {
-    if (checkPasscode(passcode)) {
-      setIsLocked(false);
-    } else {
-      setIsLocked(true);
-    }
+    setIsLocked(!checkPasscode(passcode));
   };
 
   React.useEffect(() => {
@@ -77,6 +51,28 @@ export const BoardPage = (props) => {
     isRequired: true,
     initialValue: "",
     type: "password",
+  };
+  const mainForm: FormObj = {
+    handlers: {
+      onSumbit: (values: any, { setSubmitting }: any) => {
+        console.log("form-values", values);
+        firebaseManager.addFeedback(boardId, {
+          message: values["feedbackMsg"],
+        });
+        setTimeout(() => {
+          setSubmitting(false);
+        }, 400);
+      },
+    },
+    inputFields: {
+      feedbackMsg: {
+        initialValue: "",
+        label: "feedback message",
+        placeholder: "Enter your message here",
+        isMultiLine: true,
+        className: "feedback-msg-input",
+      },
+    },
   };
 
   return (

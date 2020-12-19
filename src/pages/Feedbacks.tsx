@@ -24,6 +24,9 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
   });
   const [feedbacks, setFeedbacks] = React.useState<FeedbackObj[]>([]);
 
+  const checkUnlockKey = (unlockKey: string) =>
+    boardData.unlockKey === unlockKey;
+
   const fetchBoardData = async () => {
     if (boardId) {
       const board = await firebaseManager.getBoard(boardId);
@@ -60,15 +63,8 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
     type: "password",
   };
 
-  const checkUnlockKey = (unlockKey: string) =>
-    boardData.unlockKey === unlockKey;
-
   const onSubmit = ({ unlockKey }) => {
-    if (checkUnlockKey(unlockKey)) {
-      setIsLocked(false);
-    } else {
-      setIsLocked(true);
-    }
+    setIsLocked(!checkUnlockKey(unlockKey));
   };
 
   return (
