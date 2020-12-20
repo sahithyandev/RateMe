@@ -42,27 +42,32 @@ export class FirebaseManager {
     return this._querySnapshotToArray(feedbacksCollection);
   }
 
-  addFeedback(boardId: string, feedbackData: FeedbackObj) {
-    // upload the feedback
-    this._getBoardRef(boardId)
-      .collection(FirebaseManager.FEEDBACKS_COLLECTION_PATH)
-      .add(feedbackData);
+  async addFeedback(boardId: string, feedbackData: FeedbackObj) {
+    try {
+      await this._getBoardRef(boardId)
+        .collection(FirebaseManager.FEEDBACKS_COLLECTION_PATH)
+        .add(feedbackData);
 
-    // increase the feedbackCount
-    this._getBoardRef(boardId).update({
-      feedbackCount: firebase.firestore.FieldValue.increment(1),
-    });
+      // increase the feedbackCount
+      await this._getBoardRef(boardId).update({
+        feedbackCount: firebase.firestore.FieldValue.increment(1),
+      });
+
+      return "done";
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async createBoard(boardData: BoardObj) {
-    console.log(boardData);
-    try {
-      const docRef = await this._getBoardsCollectionRef().add(boardData);
-      console.log(docRef);
-      return docRef.id;
-    } catch (error) {
-      console.error(error);
-    }
+  createBoard(boardData: BoardObj): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const docRef = this._getBoardsCollectionRef().add(boardData);
+      docRef
+        .then((doc) => {
+          resolve(doc.id);
+        })
+        .catch(reject);
+    });
   }
 
   /** Protected Utility Methods */

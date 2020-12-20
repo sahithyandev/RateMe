@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Formik, FormikHelpers } from "formik";
-import { Button, Form, Input, Typography, Modal } from "antd";
+import { Button, Form, Input, Typography, Modal, message } from "antd";
 
 import { getInitialValues } from "./../global";
 import { FormObj } from "./../types";
@@ -23,12 +23,10 @@ export const CreateBoardPage = (props) => {
         firebaseManager
           .createBoard({ ...values, feedbackCount: 0 })
           .then((id) => {
-            console.log(id);
+            message.success("Your board is created successfully");
             setNewId(id);
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch(message.error);
       },
     },
     inputFields: {
@@ -84,7 +82,6 @@ export const CreateBoardPage = (props) => {
   const goBack = () => {
     props.history.goBack();
   };
-
   return (
     <div className="page" id="create-board-page">
       <Modal

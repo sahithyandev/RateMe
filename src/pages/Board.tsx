@@ -2,7 +2,7 @@ import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
 import { Link } from "react-router-dom";
-import { Button, Typography, Form, Input } from "antd";
+import { Button, Typography, Form, Input, message } from "antd";
 
 import { FirebaseContext } from "./../firebase-manager";
 
@@ -57,9 +57,15 @@ export const BoardPage = (props) => {
   const mainForm: FormObj = {
     handlers: {
       onSumbit: (values: any, { setSubmitting }: any) => {
-        firebaseManager.addFeedback(boardId, {
-          message: values["feedbackMsg"],
-        });
+        firebaseManager
+          .addFeedback(boardId, {
+            message: values["feedbackMsg"],
+          })
+          .then(() => {
+            message.success("Submitted successfully.");
+          })
+          .catch(message.error);
+
         setTimeout(() => {
           setSubmitting(false);
         }, 400);
