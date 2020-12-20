@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import { Link } from "react-router-dom";
 import { Button, Typography, Form, Input, message } from "antd";
 
@@ -56,13 +56,17 @@ export const BoardPage = (props) => {
   };
   const mainForm: FormObj = {
     handlers: {
-      onSumbit: (values: any, { setSubmitting }: any) => {
+      onSumbit: (
+        values: any,
+        { setSubmitting, resetForm }: FormikHelpers<any>
+      ) => {
         firebaseManager
           .addFeedback(boardId, {
             message: values["feedbackMsg"],
           })
           .then(() => {
-            message.success("Submitted successfully.");
+            message.success("Feedback submitted successfully.");
+            resetForm();
           })
           .catch(message.error);
 

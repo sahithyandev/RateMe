@@ -15,18 +15,22 @@ export const CreateBoardPage = (props) => {
 
   const _form: FormObj = {
     handlers: {
-      onSumbit: (values: any, { setSubmitting }: FormikHelpers<any>) => {
-        setTimeout(() => {
-          setSubmitting(false);
-        }, 400);
-
+      onSumbit: (
+        values: any,
+        { setSubmitting, resetForm }: FormikHelpers<any>
+      ) => {
         firebaseManager
           .createBoard({ ...values, feedbackCount: 0 })
           .then((id) => {
             message.success("Your board is created successfully");
+            resetForm();
             setNewId(id);
           })
           .catch(message.error);
+
+        setTimeout(() => {
+          setSubmitting(false);
+        }, 400);
       },
     },
     inputFields: {
@@ -89,19 +93,20 @@ export const CreateBoardPage = (props) => {
         className="custom-modal"
         onCancel={() => setNewId("")}
         onOk={() => setNewId("")}
+        title="Hooray!"
       >
-        <Title>Success</Title>
-
         <Paragraph>
           Share this link with your friends and family, and ask their opinion
-          about you.
+          about you. <br /> After sharing, visit this page later, to read the
+          feedbacks.
         </Paragraph>
 
-        <textarea
+        <TextArea
           disabled={true}
           className="link-share"
           id="link"
-          value={`${window.location.host}/board/${newId}`}
+          autoSize={true}
+          value={`${window.location.protocol}://${window.location.host}/board/${newId}`}
         />
 
         <Button style={{ width: "100%" }} type="primary" onClick={copyText}>
