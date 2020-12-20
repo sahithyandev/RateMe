@@ -81,6 +81,10 @@ export const CreateBoardPage = (props) => {
     el.disabled = true;
   };
 
+  const goBack = () => {
+    props.history.goBack();
+  };
+
   return (
     <div className="page" id="create-board-page">
       <Modal
@@ -109,6 +113,10 @@ export const CreateBoardPage = (props) => {
       </Modal>
 
       <div className="header">
+        <span
+          onClick={goBack}
+          className="fas fa-arrow-left pointable go-back"
+        ></span>
         <Title>Create Board</Title>
         <Paragraph>
           A board is where other people write their feedback on you.

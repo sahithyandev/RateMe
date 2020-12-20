@@ -24,14 +24,12 @@ export const ModalForm: React.FC<Props> = ({
   errorMessage,
 }) => {
   const [error, setError] = React.useState("");
+  const [value, setValue] = React.useState(inputField.initialValue);
   const [form] = Form.useForm();
 
   const onSubmitInternal = () => {
     if (validaterFunction) {
-      const isCorrect = validaterFunction(
-        form.getFieldValue(inputField.name || inputField.label)
-      );
-      console.log("validating internally", isCorrect);
+      const isCorrect = validaterFunction(value);
       setError(isCorrect ? "" : errorMessage);
     }
   };
@@ -48,10 +46,13 @@ export const ModalForm: React.FC<Props> = ({
       >
         <Form.Item label={inputField.label} required={inputField.isRequired}>
           <Input
+            autoFocus={true}
             type={inputField.type || "text"}
             name={inputField.name || inputField.label}
             placeholder={inputField.placeholder}
-            value={inputField.initialValue}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
           />
           {error ? <span className="error-message">* {error}</span> : null}
         </Form.Item>

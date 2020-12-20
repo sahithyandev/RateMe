@@ -7,7 +7,12 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { firebaseConfig } from "./firebase.config";
 import { FirebaseManager, FirebaseContext } from "./firebase-manager";
 
-import { CreateBoardPage, BoardPage, FeedbacksPage } from "./pages/index";
+import {
+  CreateBoardPage,
+  BoardPage,
+  FeedbacksPage,
+  HomePage,
+} from "./pages/index";
 import "./style/import.ant.less";
 import "./style/main.scss";
 
@@ -20,6 +25,7 @@ export const App = () => {
             <Route path="/create" component={CreateBoardPage} />
             <Route path="/board/:id/feedbacks" component={FeedbacksPage} />
             <Route path="/board/:id" component={BoardPage} />
+            <Route path="/" component={HomePage} />
           </Switch>
         </BrowserRouter>
       </FirebaseContext.Provider>

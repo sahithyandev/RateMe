@@ -60,7 +60,7 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
     description:
       "You are not supposed to be here unless you created this board.",
     isRequired: true,
-    initialValue: "sahithyan",
+    initialValue: "",
     type: "password",
   };
 
@@ -81,7 +81,10 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
         validaterFunction={unlockKeyValidater}
         errorMessage={"Unlock key is wrong"}
       />
-      <span onClick={goBack} className="fas fa-arrow-left pointable"></span>
+      <span
+        onClick={goBack}
+        className="fas fa-arrow-left pointable go-back"
+      ></span>
       <div className="header">
         <Title>{boardData.name}</Title>
         <Paragraph>{boardData.description}</Paragraph>

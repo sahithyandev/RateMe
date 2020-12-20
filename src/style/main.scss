@@ -37,6 +37,10 @@ body {
 .page {
   margin-top: 40px;
   padding-bottom: 40px;
+
+  .go-back {
+    font-size: 1.4rem;
+  }
 }
 
 .header {
@@ -51,4 +55,8 @@ body {
 
 .error-message {
   color: red;
+}
+
+.ant-btn.full-button {
+  width: 100%;
 }
