@@ -10,13 +10,11 @@ import { FeedbackCard } from "./../componenets/FeedbackCard";
 
 const { Title, Text, Paragraph } = Typography;
 
-// TODO Set isLocked to true again
-// and develop that part.
 export const FeedbacksPage = (props: RouteComponentProps) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
   const { id: boardId } = useParams<{ id: string }>();
-  const [isLocked, setIsLocked] = React.useState(false);
+  const [isLocked, setIsLocked] = React.useState(true);
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "",
     description: "",
@@ -25,9 +23,6 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
     feedbackCount: 0,
   });
   const [feedbacks, setFeedbacks] = React.useState<FeedbackObj[]>([]);
-
-  const checkUnlockKey = (unlockKey: string) =>
-    boardData.unlockKey === unlockKey;
 
   const fetchBoardData = async () => {
     if (boardId) {
@@ -46,9 +41,13 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
   };
 
   React.useEffect(() => {
-    fetchBoardData();
-    fetchFeedbacks();
-  }, []);
+    if (boardData.name == "") {
+      fetchBoardData();
+    }
+    if (!isLocked) {
+      fetchFeedbacks();
+    }
+  }, [isLocked]);
 
   const goBack = () => {
     props.history.goBack();
@@ -61,20 +60,26 @@ export const FeedbacksPage = (props: RouteComponentProps) => {
     description:
       "You are not supposed to be here unless you created this board.",
     isRequired: true,
-    initialValue: "",
+    initialValue: "sahithyan",
     type: "password",
   };
 
-  const onSubmit = ({ unlockKey }) => {
-    setIsLocked(!checkUnlockKey(unlockKey));
+  const checkUnlockKey = (unlockKey: string) =>
+    boardData.unlockKey === unlockKey;
+
+  const unlockKeyValidater = (unlockKey): boolean => {
+    const isCorrect = checkUnlockKey(unlockKey);
+    setIsLocked(!isCorrect);
+    return isCorrect;
   };
 
   return (
     <div className="page" id="feedbacks-page">
       <ModalForm
-        modalProps={{ visible: isLocked, title: "Enter Unlock Key" }}
+        modalProps={{ visible: isLocked, title: "Unlock Key Required" }}
         inputField={unlockKeyInput}
-        onSubmit={onSubmit}
+        validaterFunction={unlockKeyValidater}
+        errorMessage={"Unlock key is wrong"}
       />
       <span onClick={goBack} className="fas fa-arrow-left pointable"></span>
       <div className="header">

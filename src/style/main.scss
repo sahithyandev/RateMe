@@ -42,9 +42,13 @@ body {
 .header {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .pointable {
   cursor: pointer;
+}
+
+.error-message {
+  color: red;
 }

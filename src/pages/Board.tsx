@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Formik } from "formik";
-import { Button, Typography, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import { Button, Typography, Form, Input } from "antd";
 
 import { FirebaseContext } from "./../firebase-manager";
 
@@ -13,13 +13,11 @@ import { ModalForm } from "./../componenets/ModalForm";
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
 
-// TODO Set isLocked to true again
-// and develop that part.
 export const BoardPage = (props) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
   const { id: boardId } = useParams<{ id: string }>();
-  const [isLocked, setIsLocked] = React.useState(false);
+  const [isLocked, setIsLocked] = React.useState(true);
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "",
     description: "",
@@ -38,8 +36,10 @@ export const BoardPage = (props) => {
     return;
   };
 
-  const handleUnlock = ({ passcode }) => {
-    setIsLocked(!checkPasscode(passcode));
+  const passcodeValidater = (passcode) => {
+    const isCorrect = checkPasscode(passcode);
+    setIsLocked(!isCorrect);
+    return isCorrect;
   };
 
   React.useEffect(() => {
@@ -51,7 +51,7 @@ export const BoardPage = (props) => {
     placeholder: "",
     description: "Contact the creator of this board, to get the passcode.",
     isRequired: true,
-    initialValue: "",
+    initialValue: "___",
     type: "password",
   };
   const mainForm: FormObj = {
@@ -90,7 +90,6 @@ export const BoardPage = (props) => {
         </Link>
       </div>
       <ModalForm
-        onSubmit={handleUnlock}
         inputField={passcodeInput}
         modalProps={{
           visible: isLocked,
@@ -100,6 +99,8 @@ export const BoardPage = (props) => {
             console.log("can't close modal");
           },
         }}
+        validaterFunction={passcodeValidater}
+        errorMessage={"Passcode is wrong"}
       ></ModalForm>
 
       <div className="info">
