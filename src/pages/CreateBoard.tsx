@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Formik, FormikHelpers } from "formik";
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, Input, Typography, Modal } from "antd";
 
 import { getInitialValues } from "./../global";
 import { FormObj } from "./../types";
@@ -11,6 +11,7 @@ const { Title, Paragraph } = Typography;
 
 export const CreateBoardPage = (props) => {
   const firebaseManager = React.useContext(FirebaseContext);
+  const [newId, setNewId] = React.useState("");
 
   const _form: FormObj = {
     handlers: {
@@ -19,8 +20,15 @@ export const CreateBoardPage = (props) => {
           setSubmitting(false);
         }, 400);
 
-        firebaseManager.createBoard({ ...values, feedbackCount: 0 });
-        // TODO show the "success" message
+        firebaseManager
+          .createBoard({ ...values, feedbackCount: 0 })
+          .then((id) => {
+            console.log(id);
+            setNewId(id);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       },
     },
     inputFields: {
@@ -63,14 +71,47 @@ export const CreateBoardPage = (props) => {
     },
   };
 
+  const copyText = (text) => {
+    const el = document.getElementById("link") as HTMLInputElement;
+    console.log(el.value);
+    el.disabled = false;
+    el.select();
+    el.setSelectionRange(0, 9999);
+    document.execCommand("copy");
+    el.disabled = true;
+  };
+
   return (
     <div className="page" id="create-board-page">
+      <Modal
+        visible={newId !== ""}
+        className="custom-modal"
+        onCancel={() => setNewId("")}
+        onOk={() => setNewId("")}
+      >
+        <Title>Success</Title>
+
+        <Paragraph>
+          Share this link with your friends and family, and ask their opinion
+          about you.
+        </Paragraph>
+
+        <textarea
+          disabled={true}
+          className="link-share"
+          id="link"
+          value={`${window.location.host}/board/${newId}`}
+        />
+
+        <Button style={{ width: "100%" }} type="primary" onClick={copyText}>
+          Copy Link
+        </Button>
+      </Modal>
+
       <div className="header">
         <Title>Create Board</Title>
         <Paragraph>
-          {/* TODO Show a useful message here */}
-          Urna ut volutpat egestas amet posuere pellentesque molestie sagittis
-          nisi
+          A board is where other people write their feedback on you.
         </Paragraph>
       </div>
 

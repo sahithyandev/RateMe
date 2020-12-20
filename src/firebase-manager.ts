@@ -53,8 +53,15 @@ export class FirebaseManager {
     });
   }
 
-  createBoard(boardData: BoardObj) {
-    this._getBoardsCollectionRef().add(boardData);
+  async createBoard(boardData: BoardObj) {
+    console.log(boardData);
+    try {
+      const docRef = await this._getBoardsCollectionRef().add(boardData);
+      console.log(docRef);
+      return docRef.id;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /** Protected Utility Methods */

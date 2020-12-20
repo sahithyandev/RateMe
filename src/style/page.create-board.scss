@@ -1,2 +1,16 @@
 #create-board-page {
 }
+
+.custom-modal {
+  h1.ant-typography {
+    font-size: 28px;
+  }
+
+  .link-share {
+    width: 100%;
+    border: none;
+    background-color: rgb(223, 223, 223);
+    padding: 4px 10px;
+    font-family: monospace;
+  }
+}
