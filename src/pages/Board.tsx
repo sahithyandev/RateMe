@@ -17,7 +17,7 @@ export const BoardPage = (props) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
   const { id: boardId } = useParams<{ id: string }>();
-  const [isLocked, setIsLocked] = React.useState(true);
+  const [isLocked, setIsLocked] = React.useState(false);
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "",
     description: "",
@@ -92,12 +92,12 @@ export const BoardPage = (props) => {
         <Title>{boardData.name}</Title>
         <Paragraph>{boardData.description}</Paragraph>
 
-        <Link to={`/board/${boardId}/feedbacks`}>
+        {/* <Link to={`/board/${boardId}/feedbacks`}>
           <div className="icon-container">
             <span className="fas fa-comment"></span>
             <span className="feedback-count">{boardData.feedbackCount}</span>
           </div>
-        </Link>
+        </Link> */}
       </div>
       <ModalForm
         inputField={passcodeInput}
@@ -155,9 +155,20 @@ export const BoardPage = (props) => {
                     {selectedInputField.description}
                   </p>
                 </Form.Item>
-                <Button size="large" type="primary" htmlType="submit">
-                  submit
-                </Button>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Button size="large" type="primary" htmlType="submit">
+                    submit
+                  </Button>
+                  <Link to={`/board/${boardId}/feedbacks`}>
+                    <Button type="default">Read feedbacks</Button>
+                  </Link>
+                </div>
               </Form>
             );
           }

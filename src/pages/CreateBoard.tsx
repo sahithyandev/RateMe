@@ -106,7 +106,7 @@ export const CreateBoardPage = (props) => {
           className="link-share"
           id="link"
           autoSize={true}
-          value={`${window.location.protocol}://${window.location.host}/board/${newId}`}
+          value={`${window.location.protocol}//${window.location.host}/board/${newId}`}
         />
 
         <Button style={{ width: "100%" }} type="primary" onClick={copyText}>
