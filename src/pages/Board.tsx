@@ -17,7 +17,7 @@ export const BoardPage = (props) => {
   const firebaseManager = React.useContext(FirebaseContext);
 
   const { id: boardId } = useParams<{ id: string }>();
-  const [isLocked, setIsLocked] = React.useState(false);
+  const [isLocked, setIsLocked] = React.useState(true);
   const [boardData, setBoardData] = React.useState<BoardObj>({
     name: "",
     description: "",
