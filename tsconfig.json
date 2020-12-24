@@ -4,9 +4,6 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"jsx":"react",
-		"paths": {
-			"~*": ["./*"],
-		},
 		"moduleResolution": "node"
 	},
 	"include": ["src/**/*"]
